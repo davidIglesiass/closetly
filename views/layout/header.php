@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fachion Flux</title>
+    <title>Fashion Flux</title>
     <link rel="stylesheet" href="../assets/css/app.css">
     <link rel="icon" href="../assets/img/logo.png">
 </head>

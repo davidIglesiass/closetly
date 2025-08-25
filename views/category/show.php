@@ -12,7 +12,7 @@
                     <?php endif; ?>
                     <h2><a class="link-product" href="/product/show&id=<?= $product->id ?>"><?= $product->name ?></a></h2>
                     <p>$<?= $product->price ?> USD</p>
-                    <a href="/carshop/add&id=<?= $product->id ?>" class="buy">Buy</a>
+                    <a href="/carshop/add&id=<?= $product->id ?>" class="button alert alert-info buy">Buy</a>
                 </div>
             <?php endforeach; ?>
         <?php endif; ?>
