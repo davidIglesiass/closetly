@@ -103,7 +103,7 @@ form>input[type="file"]:before {
 #header{
     display: flex;
     flex-direction: row;
-    background-color: #ebd6a7;
+    background-color: #c2c2bf;
     border-bottom: none;
     padding: 0 20%;
 }
@@ -227,6 +227,8 @@ form>input[type="file"]:before {
     flex-direction: column;
     align-items: start;
     gap: 10px;
+    min-width: 300px;
+    min-height: 400px;
 }
 
 #aside-container a:hover{
@@ -316,8 +318,8 @@ form>input[type="file"]:before {
 }
 
 .details{
-    min-width: 285px;
-    max-width: 400px;
+    max-width: fit-content;
+    max-height: fit-content;
 }
 
 .product-details{
@@ -333,7 +335,7 @@ form>input[type="file"]:before {
 }
 
 .product-details img{
-    width: 400px;
+    max-width: 600px;
     border-radius: 5px;
 }
 
