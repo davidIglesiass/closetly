@@ -1,35 +1,59 @@
 <?php
 
-require_once 'models/CategoryModel.php';
-require_once 'models/ProductModel.php';
+require_once 'models/CategoryRepository.php';
+require_once 'models/ProductRepository.php';
 
 class CategoryController{
     public function index(){
         Utils::isAdmin();
-        $categories = new CategoryModel();
-        $categories = $categories->getAll();
+        $categories = (new CategoryRepository())->findAll();
 
         require_once 'views/category/index.php';
     }
 
     public function show(){
         if(isset($_GET['id'])){
-            $category = new CategoryModel;
-            $category->setId($_GET['id']);
-            $categorie = $category->getOne();
- 
-            $product = new ProductModel;
-            $product->setCategoryId($_GET['id']);
-            $productByCategory = $product->getAllCategories();
+            $categorie = (new CategoryRepository())->find($_GET['id']);
+
+            if($categorie){
+                $GLOBALS['pageTitle'] = $categorie->name . ' — Closetly';
+                $GLOBALS['pageDescription'] = 'Shop ' . $categorie->name . ' at Closetly.';
+            }
+
+            $productRepository = new ProductRepository();
+            $productByCategory = $productRepository->attachImages($productRepository->findAllByCategory($_GET['id']));
         }
         require_once 'views/category/show.php';
     }
-    
+
     public function save(){
         Utils::isAdmin();
-        $category = new CategoryModel();
-        $category->setName($_POST['name']);
-        $category->save();
+        $category = new Category();
+        $category->name = trim($_POST['name'] ?? '');
+        $category->parent_id = !empty($_POST['parent_id']) ? $_POST['parent_id'] : null;
+
+        if($category->name === ''){
+            $_SESSION['categoryunsaved'] = 'Category name is required';
+        }elseif((new CategoryRepository())->insert($category)){
+            $_SESSION['categorysaved'] = 'Category saved successfully';
+        }else{
+            $_SESSION['categoryunsaved'] = 'Category not saved';
+        }
+
+        header('Location: /category/index');
+    }
+
+    public function delete(){
+        Utils::isAdmin();
+
+        if(!Utils::validateCsrfToken($_POST['csrf_token'] ?? null)) return header('Location: /category/index');
+
+        if(isset($_POST['id']) && (new CategoryRepository())->delete($_POST['id'])){
+            $_SESSION['categorydeleted'] = 'Category deleted successfully';
+        }else{
+            $_SESSION['categoryundeleted'] = 'Category still has subcategories or products - remove those first';
+        }
+
         header('Location: /category/index');
     }
 }

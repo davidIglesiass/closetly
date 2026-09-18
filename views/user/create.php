@@ -11,20 +11,20 @@
 
     <?php Utils::deleteSession('registerfailed'); ?>
     <?php Utils::deleteSession('registersaved'); ?>
-    
+
     <form action="/user/save" method="POST">
-        <label for="firstname"> First name</label>
-        <input type="text" name="firstname" required>
-    
-        <label for="lastname"> Last name</label>
-        <input type="text" name="lastname" required>
-    
-        <label for="email"> Email </label>
-        <input type="email" name="email" required>
-    
-        <label for="password"> Password </label>
-        <input type="password" name="password" required>
-        <br>
+        <input type="hidden" name="csrf_token" value="<?= Utils::generateCsrfToken() ?>">
+        <label for="firstname">First name</label>
+        <input type="text" id="firstname" name="firstname" required>
+
+        <label for="lastname">Last name</label>
+        <input type="text" id="lastname" name="lastname" required>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
         <input type="submit" value="Register">
     </form>
 </div>
