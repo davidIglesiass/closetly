@@ -1,6 +1,6 @@
 <?php
 
-require_once 'models/ProductModel.php';
+require_once 'models/ProductRepository.php';
 
 class CarshopController {
     public function index() {
@@ -9,7 +9,11 @@ class CarshopController {
     }
 
     public function add(){
-        isset($_GET["id"])? $idProduct = $_GET["id"] : header("Location: /");
+        if(!isset($_GET["id"])){
+            header("Location: /");
+            exit;
+        }
+        $idProduct = $_GET["id"];
         if(isset($_SESSION["carshop"])){
             $i = 0;
             foreach($_SESSION["carshop"] as $index => $product){
@@ -20,9 +24,7 @@ class CarshopController {
             }
         }
         if(!isset($i) || $i == 0){
-            $product = new ProductModel();
-            $product->setId($idProduct);
-            $product = $product->getOne();
+            $product = (new ProductRepository())->find($idProduct);
 
             $_SESSION["carshop"][] = array(
                 "id" => $product->id,
@@ -37,7 +39,7 @@ class CarshopController {
     }
 
     public function remove(){
-        if(isset($_GET["index"])){
+        if(isset($_GET["index"], $_SESSION["carshop"][$_GET["index"]])){
             unset($_SESSION["carshop"][$_GET["index"]]);
         }
         header("Location: /carshop/index");
@@ -50,18 +52,18 @@ class CarshopController {
     }
 
     public function up(){
-        if(isset($_GET["index"])){
-            $index = $_GET["index"];
+        $index = $_GET["index"] ?? null;
+        if(isset($_SESSION["carshop"][$index])){
             $_SESSION["carshop"][$index]["units"]++;
         }
         header("Location: /carshop/index");
     }
 
-    public function down(){ 
-        if(isset($_GET["index"])){
-            $index = $_GET["index"];
+    public function down(){
+        $index = $_GET["index"] ?? null;
+        if(isset($_SESSION["carshop"][$index])){
             $_SESSION["carshop"][$index]["units"]--;
-            if($_SESSION["carshop"][$index]["units"] == 0) unset($_SESSION["carshop"][$_GET["index"]]);
+            if($_SESSION["carshop"][$index]["units"] <= 0) unset($_SESSION["carshop"][$index]);
         }
         header("Location: /carshop/index");
     }

@@ -1,19 +1,16 @@
-<div id="product-container">
+<div id="product-container" role="main" aria-label="Category products">
     <?php if (isset($categorie)): ?>
+        <h1><?= $categorie->departmentName ? htmlspecialchars($categorie->departmentName) . ' / ' : '' ?><?= htmlspecialchars($categorie->name) ?></h1>
         <?php if (empty($productByCategory)): ?>
-            <h1>There are no products in <em>"<?= $categorie->name ?>"</em> category</h1>
+            <p>There are no products in this category yet.</p>
         <?php else: ?>
             <?php foreach ($productByCategory as $product): ?>
-                <div class="product">
-                    <?php if ($product->image != null): ?>
-                        <img src="/public/uploads/products/<?= $product->image ?>" alt="product">
-                    <?php else: ?>
-                        <img src="/assets/img/tshirt-black.png" alt="product">
-                    <?php endif; ?>
-                    <h2><a class="link-product" href="/product/show&id=<?= $product->id ?>"><?= $product->name ?></a></h2>
-                    <p>$<?= $product->price ?> USD</p>
-                    <a href="/carshop/add&id=<?= $product->id ?>" class="button alert alert-info buy">Buy</a>
-                </div>
+                <article class="product">
+                    <?php require 'views/product/_gallery.php'; ?>
+                    <h2><a class="link-product" href="/product/show&id=<?= $product->id ?>"><?= htmlspecialchars($product->name) ?></a></h2>
+                    <p class="price"><?= htmlspecialchars($product->price) ?> USD</p>
+                    <a href="/carshop/add&id=<?= $product->id ?>" class="button buy">Buy</a>
+                </article>
             <?php endforeach; ?>
         <?php endif; ?>
     <?php else: ?>
