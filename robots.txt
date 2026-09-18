@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /product/manage
+Disallow: /product/create
+Disallow: /product/update
+Disallow: /category/index
+Disallow: /order/manage
+Disallow: /carshop/
+Allow: /

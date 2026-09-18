@@ -1,0 +1,13 @@
+.env
+public/uploads/products/*
+!public/uploads/products/.gitkeep
+node_modules/
+package-lock.json
+*.log
+.vscode/
+.idea/
+*.swp
+*.swo
+~
+playwright-report/
+test-results/
